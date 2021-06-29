@@ -205,6 +205,35 @@ avg_survey_length <-function(df,enumerator_uuid){
   }
 }
 
+# checking time between two interviews in same village or in differnent village
+time_btwn_ints <- function(df,device_id,start_col = "start",end_col = "end",village_col, same_village_threshold=3,diff_village_threshold=5){
+  checked_df <- df
+  
+  checked_df <- checked_df[order(checked_df[[start_col]]), ]
+  checked_df <- checked_df[order(checked_df[[device_id]]), ]
+  
+  end_2 <- checked_df[[end_col]][1]
+  end_2 <- append(end_2, checked_df[[end_col]])
+  checked_df$end_2 <- end_2[-length(end_2)]
+  checked_df$gap_between_ints <- difftime(as.POSIXct(ymd_hms(checked_df[[start_col]])), as.POSIXct(ymd_hms(checked_df$end_2)), units = "mins")
+  
+  village_2 <- checked_df[[village_col]][1]
+  village_2 <- append(village_2, checked_df[[village_col]])
+  checked_df$village_2 <- village_2[-length(village_2)]
+  
+  checked_df$CHECK_gap_between_ints <- "Okay"
+  checked_df$CHECK_gap_between_ints[checked_df[[village_col]]!=checked_df$village_2 & as.numeric(checked_df$gap_between_ints) < diff_village_threshold] <- paste0("the elapsed time between two interviews in different villages is less than ",diff_village_threshold, " minutes")
+  
+  checked_df$CHECK_gap_between_ints[checked_df[[village_col]]==checked_df$village_2 & as.numeric(checked_df$gap_between_ints) < same_village_threshold] <- paste0("the elapsed time between two interviews in the same village is less than ",same_village_threshold, " minutes")
+
+  for (i in unique(checked_df[[device_id]])) {
+    checked_df$gap_between_ints[checked_df[[device_id]] == i][1] <- NA
+    checked_df$CHECK_gap_between_ints[checked_df[[device_id]] == i][1] <- "Okay"
+  }
+  
+  checked_df <- checked_df[,-which(names(checked_df) %in% c("end_2","village_2"))]
+  return(checked_df)
+}
 
 
 
