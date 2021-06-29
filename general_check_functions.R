@@ -35,9 +35,9 @@ df <- time_check(df, time_min,time_max)
 
 
 # Survey made before first day of data collection -------------------------
-started_before <-function(df,df_date_today,start_date,var_list= c()){
+started_before <-function(df,df_date_today,assessment_start_date,var_list= c()){
   df %>% 
-    filter(df_date_today < start_date) %>%
+    filter(df_date_today < assessment_start_date) %>%
     select(var_list)
 }
 
