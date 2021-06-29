@@ -207,32 +207,6 @@ avg_survey_length <-function(df,enumerator_uuid){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Calling functions  ------------------------------------------------------
 
 #calling started_before function to flag if interviews are started before first day of assessment
@@ -306,10 +280,9 @@ ending_b4_start <- ending_before_start(df,start,end,var_list = c("Date" = "today
 #calling survey_status_per_day
 survey_status <- survey_status_per_day(df,df$today)
 
-
 #average_duration
-
 avg_duration <- avg_survey_length(df,df$enumerator_id)
+
 #calling survey status per day by enumerator
 survey_status_enumerator <- survey_per_day_enumerator(df,df$today,df$enumerator_id)
 
