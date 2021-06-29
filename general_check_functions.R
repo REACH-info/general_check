@@ -8,6 +8,7 @@ source("audit_function.R")
 
 
 # Reading raw data --------------------------------------------------------
+# Available in REACH Dropbox and link is given in googlesheet
 df <- read_excel("AGORA_Endline_2021_HH_Final_Version_-_all_versions_-_False_-_2021-06-06-11-58-36.xlsx")
 
 
